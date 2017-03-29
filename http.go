@@ -2,15 +2,23 @@ package main
 
 import (
 "fmt"
-"net/http"
+"log"
+"github.com/buaazp/fasthttprouter"
+"github.com/valyala/fasthttp"
 )
 
-func handler(w http.ResponseWriter, r *http.Request) {
-  fmt.Fprintf(w, "Hi there, I love %s!", r.URL.Path[1:])
+func Index(ctx *fasthttp.RequestCtx) {
+  fmt.Fprint(ctx, "Hi there, I love !")
+}
+
+func Hello(ctx *fasthttp.RequestCtx) {
+  fmt.Fprint(ctx, "Hi there, I love %s!", ctx.UserValue("name"))
 }
 
 func main() {
-  http.HandleFunc("/", handler)
-  http.ListenAndServe(":4000", nil)
-//fmt.Println("hello")
+  router := fasthttprouter.New()
+  router.GET("/", Index)
+  router.GET("/:name", Hello)
+
+  log.Fatal(fasthttp.ListenAndServe(":4000", router.Handler))
 }
