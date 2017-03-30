@@ -12,7 +12,7 @@ func Index(ctx *fasthttp.RequestCtx) {
 }
 
 func Hello(ctx *fasthttp.RequestCtx) {
-  fmt.Fprint(ctx, "Hi there, I love %s!", ctx.UserValue("name"))
+  fmt.Fprintf(ctx, "Hi there, I love %s !", ctx.UserValue("name"))
 }
 
 func main() {
